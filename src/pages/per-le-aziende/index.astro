@@ -10,17 +10,17 @@ const title = 'Vocal coaching aziendale per manager e CDA | VCP';
 const description = 'Per le risorse umane, un percorso individuale di vocal coaching per un manager o un consigliere, con obiettivi concordati, riservatezza e attivazione aziendale.';
 
 const cases = [
-  ['Il consiglio', 'Il direttore tecnico più preparato dell\'azienda presenta il piano industriale. Dopo cinque minuti il presidente lo interrompe e la discussione prende un\'altra strada.'],
-  ['La fusione', 'Un nuovo amministratore delegato deve parlare a due aziende che fino a ieri erano concorrenti. Le persone ascoltano il tono prima ancora delle decisioni.'],
-  ['Il passaggio generazionale', 'Il figlio del fondatore entra in consiglio. Ha le competenze, ma in sala i manager storici guardano ancora il padre quando lui parla.'],
-  ['I grandi clienti', 'Il direttore commerciale porta numeri impeccabili alla trattativa più importante dell\'anno. Il cliente annuisce, ringrazia e rimanda.'],
+  ['Il consiglio', 'Il direttore tecnico presenta il piano industriale al consiglio di amministrazione. I contenuti sono solidi, ma l\'esposizione non sostiene l\'attenzione e la discussione si sposta altrove prima che le proposte arrivino a una decisione.'],
+  ['La fusione', 'Dopo un\'integrazione societaria, il nuovo amministratore delegato si rivolge a due organizzazioni con storie e culture diverse. Il tono con cui comunica le prime decisioni condiziona la fiducia di entrambe.'],
+  ['Il passaggio generazionale', 'Il successore designato entra in consiglio con le competenze necessarie. Deve però costruire un\'autorevolezza propria agli occhi di manager che hanno lavorato per anni accanto al fondatore.'],
+  ['I grandi clienti', 'Il direttore commerciale guida la trattativa più rilevante dell\'anno. A parità di offerta, la sicurezza con cui sostiene condizioni e prezzo incide in modo diretto sull\'esito della negoziazione.'],
 ];
 
 const steps = [
-  ['Il brief con te', 'Una conversazione riservata tra Stefano e chi in azienda segue il percorso. Si chiariscono il ruolo della persona, i contesti in cui deve essere più efficace e gli obiettivi che l\'azienda considera un risultato.'],
-  ['Il colloquio con la persona', 'Stefano incontra il manager prima di iniziare. Ascolta come parla oggi e valuta se il percorso individuale è la risposta giusta. Se non lo è, lo dice subito.'],
-  ['Il percorso individuale', 'Sessioni uno a uno su voce, respirazione, ritmo e struttura del discorso, con The Voice Code™ e MySkema™. Il lavoro si costruisce sulle riunioni reali che la persona affronta in quelle settimane.'],
-  ['Il punto con l\'azienda', 'Stati di avanzamento periodici sugli obiettivi concordati. All\'azienda arrivano i progressi, mai il contenuto delle sessioni.'],
+  ['Con l\'azienda', 'Il brief', 'Stefano incontra chi in azienda segue il percorso, la direzione del personale o l\'amministratore delegato. Insieme si definiscono il ruolo del manager, i contesti in cui deve essere più efficace e gli obiettivi da raggiungere.'],
+  ['Con il manager', 'Il colloquio', 'Stefano incontra il manager che seguirà il percorso. Ascolta come comunica oggi, raccoglie la sua prospettiva e verifica che il percorso individuale sia la risposta adatta.'],
+  ['Stefano e il manager', 'Il percorso', 'Sessioni individuali su voce, respirazione, ritmo e struttura del discorso, con The Voice Code™ e MySkema™, costruite sulle situazioni professionali reali del manager.'],
+  ['Con l\'azienda', 'Le verifiche', 'Stati di avanzamento periodici sugli obiettivi concordati. All\'azienda arrivano i progressi, mai il contenuto delle sessioni.'],
 ];
 
 const deliverables = [
@@ -28,7 +28,12 @@ const deliverables = [
   ['Riservatezza verso il team', 'Quello che il manager porta in sessione resta in sessione. È la condizione che gli permette di lavorare davvero sui punti deboli.'],
   ['Stati di avanzamento', 'Aggiornamenti periodici per chi in azienda segue il percorso, utili anche per rendere conto alla direzione dell\'investimento.'],
   ['Un solo interlocutore', 'Stefano segue di persona il brief, il colloquio, le sessioni e i punti di verifica. Nessun passaggio di consegne.'],
-  ['Attivazione aziendale', 'Contratto e fatturazione all\'azienda, con la durata e la frequenza delle sessioni definite insieme a te.'],
+];
+
+const admin = [
+  ['Un costo d\'impresa', 'La formazione del personale è in linea generale un costo deducibile dal reddito d\'impresa, quando è inerente all\'attività. Un percorso sulla comunicazione di chi guida l\'azienda lo è per natura.'],
+  ['Documentazione completa', 'Contratto, fatture e stati di avanzamento descrivono obiettivi, tempi e risultati del percorso. È la documentazione che serve all\'amministrazione per attestarne l\'inerenza.'],
+  ['Fatturazione all\'azienda', 'Un percorso definito con costo e durata concordati prima di iniziare, oppure un canone mensile per i programmi che proseguono nel tempo.'],
 ];
 
 const compare = [
@@ -44,6 +49,7 @@ const faqs = [
   ['Come si misurano i risultati?', 'Sugli obiettivi concordati all\'inizio, osservati nei contesti reali. Per esempio quanto a lungo la persona tiene l\'attenzione in riunione, quante volte viene interrotta, come cambiano le risposte di clienti, team e consiglio. Gli stati di avanzamento li riportano all\'azienda.'],
   ['Cosa viene condiviso con l\'azienda?', 'I progressi rispetto agli obiettivi. Il contenuto delle sessioni resta riservato tra Stefano e la persona, ed è proprio questo che rende il lavoro efficace.'],
   ['Quanto costa un percorso aziendale?', 'Dipende dal numero di persone, dagli obiettivi e dalla durata. La proposta arriva dopo il brief, con costi e tempi definiti prima di iniziare.'],
+  ['La spesa è deducibile per l\'azienda?', 'In linea generale sì. La formazione del personale inerente all\'attività è un costo d\'impresa deducibile, e il percorso viene fatturato all\'azienda con tutta la documentazione necessaria. Per il caso specifico fa fede il parere del vostro consulente fiscale.'],
   ['E dopo il vocal coaching?', 'Chi ha completato il percorso può proseguire con il KPI Coaching, dedicato a centratura, presenza fisica e leadership percepita.'],
 ];
 
@@ -127,10 +133,10 @@ const schema = [
         <h2 id="come" class="h2">Quattro passaggi, un solo interlocutore.</h2>
       </div>
       <ol class="hr-steps">
-        {steps.map(([t, d], i) => (
+        {steps.map(([k, t, d], i) => (
           <li class="hr-step">
             <span class="hr-num" aria-hidden="true">0{i + 1}</span>
-            <div><h3>{t}</h3><p>{d}</p></div>
+            <div><span class="hr-kick">{k}</span><h3>{t}</h3><p>{d}</p></div>
           </li>
         ))}
       </ol>
@@ -149,6 +155,22 @@ const schema = [
             <div><h3>{t}</h3><p>{d}</p></div></li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <section class="sec bg-paper" aria-labelledby="amministrazione">
+    <div class="wrap split">
+      <div class="split-head stack">
+        <p class="eyebrow">Gli aspetti amministrativi</p>
+        <h2 id="amministrazione" class="h2">Un investimento semplice da gestire.</h2>
+        <p class="muted">Le informazioni che servono all'amministrazione e alla direzione prima di approvare il percorso.</p>
+      </div>
+      <div class="stack" style="gap:0">
+        <ul class="admin">
+          {admin.map(([t, d]) => <li><h3>{t}</h3><p>{d}</p></li>)}
+        </ul>
+        <p class="admin-note">Le indicazioni fiscali sono di carattere generale. Per il caso specifico fa fede il parere del vostro consulente.</p>
+      </div>
     </div>
   </section>
 
@@ -178,7 +200,6 @@ const schema = [
     <div class="wrap trust">
       <figure class="story-quote">
         <blockquote>“Il CEO era andato a vedere il mio profilo LinkedIn e poi ha detto all'HR manager: contattami Volpe.”</blockquote>
-        <figcaption>Stefano Volpe, sull'inizio della collaborazione con Porsche Italia</figcaption>
       </figure>
       <div class="stack">
         <p class="eyebrow">Aziende con cui Stefano ha collaborato</p>
