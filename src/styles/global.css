@@ -82,8 +82,8 @@ p { margin: 0; }
   .hero { padding: 32px var(--side) 96px; }
   .hero-grid { display: grid; grid-template-columns: 7fr 5fr; grid-template-areas: "copy portrait" "form portrait"; column-gap: 48px; row-gap: 40px; align-items: start; }
   .hero-copy { grid-area: copy; padding-top: 40px; }
-  .hero-form { grid-area: form; max-width: 560px; padding-bottom: 40px; }
-  .portrait { grid-area: portrait; align-self: start; height: 640px; margin-top: 24px; }
+  .hero-form { grid-area: form; max-width: 560px; }
+  .portrait { grid-area: portrait; align-self: stretch; height: auto; min-height: 640px; margin-top: 24px; }
 }
 
 /* Form in tre passi */
@@ -304,3 +304,10 @@ p { margin: 0; }
   -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%), linear-gradient(to bottom, transparent 0, #000 18%); mask-composite: intersect; }
 @media (max-width: 1023px) { .portrait-far img { width: 78%; } }
 .portrait-scene img { object-position: 60% 50%; }
+
+/* Desktop: il pannello del ritratto è alto quanto titolo + form, Stefano appoggiato in basso */
+@media (min-width: 1024px) {
+  .portrait-far { background: radial-gradient(120% 70% at 50% 100%, #2a2a2a 0%, #1c1c1c 55%, #151515 100%); }
+  .portrait-far img { width: 100%; max-width: none; }
+  .portrait-scene img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% 40%; }
+}
