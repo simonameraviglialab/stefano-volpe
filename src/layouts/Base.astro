@@ -16,8 +16,9 @@ interface Props {
   description: string;
   ogImage?: string;
   schema?: object[];
+  heroImage?: string;
 }
-const { title, description, ogImage = '/img/og/home.jpg', schema = [] } = Astro.props;
+const { title, description, ogImage = '/img/og/home.jpg', schema = [], heroImage = '/img/stefano-volpe.webp' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const og = new URL(ogImage, site.url).href;
 ---
@@ -43,7 +44,7 @@ const og = new URL(ogImage, site.url).href;
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preload" as="image" href="/img/stefano-volpe.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href={heroImage} fetchpriority="high" />
   {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   <!-- GTM solo sul dominio di produzione, mai sulle anteprime Vercel -->
   <script is:inline define:vars={{ gtm: site.gtm }}>
