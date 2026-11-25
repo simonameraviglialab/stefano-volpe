@@ -2,8 +2,8 @@
 // Form in tre passi: chi sei, la situazione, il giorno.
 // Passo 2 invia a HubSpot (stesso portale del form attuale), passo 3 apre il calendario Cal.com già compilato.
 import { site } from '../data/site';
-interface Props { id: string; }
-const { id } = Astro.props;
+interface Props { id: string; ruoloDefault?: string; perChiDefault?: string; }
+const { id, ruoloDefault, perChiDefault } = Astro.props;
 const situazioni = ["Un consiglio o un'assemblea", 'Investitori o soci', 'Una trattativa', 'Il mio team', 'Interventi pubblici e video'];
 // value = opzione della proprietà HubSpot ruolo_in_azienda (deve coincidere esattamente)
 const ruoli = [
@@ -33,13 +33,13 @@ const perChi = [
     </div>
     <div class="field"><label for={`${id}-r`}>Ruolo*</label>
       <select id={`${id}-r`} name="ruolo_in_azienda" required>
-        {ruoli.map(([v, l]) => <option value={v}>{l}</option>)}
+        {ruoli.map(([v, l]) => <option value={v} selected={v === ruoloDefault}>{l}</option>)}
       </select>
     </div>
     <div class="field" role="radiogroup" aria-labelledby={`${id}-pc`}>
       <span class="lbl" id={`${id}-pc`}>Per chi è il percorso?*</span>
       <div class="chips chips-col">
-        {perChi.map(([v, l]) => <label><input type="radio" name="chi_richiede_il_servizio" value={v} required /><span>{l}</span></label>)}
+        {perChi.map(([v, l]) => <label><input type="radio" name="chi_richiede_il_servizio" value={v} required checked={v === perChiDefault} /><span>{l}</span></label>)}
       </div>
     </div>
     <p class="form-err" data-err hidden>Servono nome, un indirizzo email valido e per chi è il percorso.</p>

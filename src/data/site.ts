@@ -1,7 +1,7 @@
 // Dati condivisi. Gli ID vanno confermati prima del lancio.
 export const site = {
   name: 'Vocal Coaching Project di Stefano Volpe',
-  url: 'https://www.vocalcoachingproject.net',
+  url: 'https://vocalcoachingproject.net',
   gtm: 'GTM-TW48TQ38',
   // Form HubSpot HOME_MainForm_V2_25112026, con il flusso delle 5 email.
   // Il form della home attuale (HOME_MainForm_20092026) resta intatto per il sito vecchio.
@@ -13,9 +13,10 @@ export const site = {
 };
 
 export const nav = [
-  { label: 'Il metodo', href: '/metodo/' },
-  { label: 'Per le aziende', href: '/aziende/' },
-  { label: 'Storie', href: '/storie/' },
-  { label: 'Chi sono', href: '/chi-sono/' },
+  // Indirizzi identici a quelli del sito attuale (SEO)
+  { label: 'Il metodo', href: '/vocal-coaching/' },
+  { label: 'Per le aziende', href: '/per-le-aziende/' },
+  { label: 'Storie', href: '/testimonianze/' },
+  { label: 'Chi sono', href: '/stefano-volpe-bio/' },
   { label: 'Approfondimenti', href: '/approfondimenti/' },
 ];
