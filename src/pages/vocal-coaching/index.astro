@@ -47,18 +47,25 @@ const methods = [
   },
 ];
 
+// [titolo, etichetta, testo, icona]
 const steps = [
-  ['Il colloquio conoscitivo', 'Trenta minuti con Stefano per capire obiettivi, contesti e punti da rafforzare. È anche il momento in cui Stefano valuta se il percorso è adatto.'],
-  ['The Voice Code™', 'Il lavoro sulla matrice vocale. Respirazione, articolazione, proiezione e musicalità, con esercizi semplici e risultati udibili già nelle prime sessioni.'],
-  ['MySkema™', 'Il lavoro sull\'esposizione. Struttura dei discorsi, linguaggio, direzione e intenzione, sulle riunioni e sugli interventi reali che ti aspettano.'],
-  ['L\'autonomia', 'A fine percorso gestisci da solo tono, ritmo e intensità nelle diverse situazioni. Gli strumenti restano tuoi.'],
+  ['Il colloquio conoscitivo', '30 minuti', 'Obiettivi, contesti e punti da rafforzare. Stefano valuta se il percorso è adatto.', 'talk'],
+  ['The Voice Code™', 'Fase 1 · la voce', 'Respirazione, articolazione, proiezione e musicalità. Risultati udibili già nelle prime sessioni.', 'wave'],
+  ['MySkema™', 'Fase 2 · il discorso', 'Struttura, linguaggio e intenzione, costruiti sulle riunioni reali che ti aspettano.', 'score'],
+  ['L\'autonomia', 'Il risultato', 'Tono, ritmo e intensità li gestisci da solo, in ogni situazione. Gli strumenti restano tuoi.', 'key'],
 ];
+const icons: Record<string, string> = {
+  talk: '<path d="M4 6h16v10H9l-5 4z" />',
+  wave: '<path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2" />',
+  score: '<path d="M3 7h18M3 11h18M3 15h18M8 5v12M16 9v8" />',
+  key: '<circle cx="8" cy="12" r="4" /><path d="M12 12h9M18 12v3M21 12v2" />',
+};
 
 const contexts = [
-  { id: 'consiglio', label: 'In consiglio', title: 'Le proposte arrivano a una decisione.', points: ['Un\'esposizione strutturata che porta il consiglio dove vuoi portarlo', 'Meno interruzioni, perché il discorso ha una direzione chiara', 'Tempi decisionali più brevi, perché il messaggio arriva al primo passaggio'] },
-  { id: 'trattativa', label: 'In trattativa', title: 'Condizioni sostenute con calma e fermezza.', points: ['Pause usate come strumento, non subite come silenzi', 'Un tono stabile anche quando la discussione si irrigidisce', 'Argomenti presentati in un ordine che convince'] },
-  { id: 'team', label: 'Con il team', title: 'Le persone seguono la direzione.', points: ['Messaggi chiari che non richiedono di essere ripetuti', 'Competenze trasferite in modo ordinato e memorabile', 'Riunioni più brevi e più concrete'] },
-  { id: 'pubblico', label: 'In pubblico', title: 'Una presenza che regge l\'intera durata.', points: ['Una voce che resta piena dall\'inizio alla fine della giornata', 'Meno stanchezza dopo interventi, call e presentazioni', 'Un\'attenzione che non cala dopo i primi minuti'] },
+  { id: 'consiglio', label: 'In consiglio', title: 'Le proposte arrivano a una decisione.', points: [['Una direzione chiara', 'Il discorso porta il consiglio dove vuoi portarlo.'], ['Meno interruzioni', 'Chi ascolta segue il filo e lascia finire.'], ['Decisioni più rapide', 'Il messaggio arriva al primo passaggio.']] },
+  { id: 'trattativa', label: 'In trattativa', title: 'Condizioni sostenute con calma e fermezza.', points: [['Pause come strumento', 'Il silenzio diventa una scelta, non un vuoto.'], ['Un tono stabile', 'Anche quando la discussione si irrigidisce.'], ['Argomenti in ordine', 'La sequenza giusta per convincere.']] },
+  { id: 'team', label: 'Con il team', title: 'Le persone seguono la direzione.', points: [['Messaggi chiari', 'Non serve ripeterli due volte.'], ['Competenze trasferite', 'In modo ordinato e facile da ricordare.'], ['Riunioni più brevi', 'Più concrete, con conclusioni nette.']] },
+  { id: 'pubblico', label: 'In pubblico', title: 'Una presenza che regge l\'intera durata.', points: [['Voce piena fino a sera', 'Dall\'inizio alla fine della giornata.'], ['Meno stanchezza', 'Dopo interventi, call e presentazioni.'], ['Attenzione costante', 'Anche oltre i primi minuti.']] },
 ];
 
 const faqs = [
@@ -201,17 +208,31 @@ const schema = [
 
   <!-- 4. Il percorso -->
   <section class="sec bg-white" id="percorso" aria-labelledby="come">
-    <div class="wrap stack" style="gap:48px">
+    <div class="wrap stack" style="gap:40px">
       <div class="stack head">
         <p class="eyebrow">Come si svolge</p>
         <h2 id="come" class="h2">Dal primo colloquio all'autonomia.</h2>
-        <p class="muted">Sempre individuale, con sessioni costruite sui tuoi impegni reali. Tra una sessione e l'altra puoi inviare a Stefano registrazioni audio o video per avere un riscontro.</p>
+        <p class="muted">Sempre individuale, costruito sui tuoi impegni reali.</p>
       </div>
-      <ol class="hr-steps">
-        {steps.map(([t, d], i) => (
-          <li class="hr-step"><span class="hr-num" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></li>
+      <ol class="journey" data-journey>
+        <span class="journey-track" aria-hidden="true"><span class="journey-fill"></span></span>
+        {steps.map(([t, tag, d, ic], i) => (
+          <li class="jstep">
+            <span class="jnode" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={icons[ic]} />
+            </span>
+            <div class="jbody">
+              <span class="jtag">0{i + 1} · {tag}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
+          </li>
         ))}
       </ol>
+      <p class="journey-note">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="8" y="3" width="8" height="12" rx="4" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
+        <span>Tra una sessione e l'altra puoi inviare a Stefano una registrazione audio o video e ricevere un riscontro.</span>
+      </p>
     </div>
   </section>
 
@@ -232,7 +253,7 @@ const schema = [
         {contexts.map((c, i) => (
           <div class="ctx-panel" role="tabpanel" id={`ctxp-${c.id}`} aria-labelledby={`ctx-${c.id}`} hidden={i !== 0}>
             <h3>{c.title}</h3>
-            <ul>{c.points.map((p) => <li>{p}</li>)}</ul>
+            <ul class="ctx-tiles">{c.points.map(([h, d], j) => <li><span class="ct-n">0{j + 1}</span><b>{h}</b><span>{d}</span></li>)}</ul>
           </div>
         ))}
         <a class="link" href="/kpi-coaching/">Dopo il percorso, il KPI Coaching</a>
@@ -339,6 +360,19 @@ const schema = [
     });
   }
   tabs(document.querySelector('[data-tabs]'));
+
+  // Percorso: la linea si riempie e le tappe si accendono man mano che si scorre
+  const journey = document.querySelector<HTMLElement>('[data-journey]');
+  if (journey && 'IntersectionObserver' in window) {
+    const stepsEl = [...journey.querySelectorAll<HTMLElement>('.jstep')];
+    journey.classList.add('js');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      const lit = stepsEl.filter((x) => x.classList.contains('in')).length;
+      journey.style.setProperty('--progress', String(Math.max(0, lit - 1) / (stepsEl.length - 1)));
+    }, { rootMargin: '0px 0px -25% 0px' });
+    stepsEl.forEach((x) => io.observe(x));
+  }
 
   // Elementi dei metodi: su telefono si aprono uno alla volta, su desktop sono già tutti visibili
   document.querySelectorAll<HTMLButtonElement>('.mi-head').forEach((b) => b.addEventListener('click', () => {
