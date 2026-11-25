@@ -1,0 +1,336 @@
+---
+// Il metodo: indirizzo identico a quello attuale (/vocal-coaching/).
+// Pagina interattiva: calcolatore delle ore di voce, la stessa frase detta in due modi,
+// i due metodi a schede, cosa cambia per contesto. Tutto in JavaScript leggero, senza librerie.
+import Base from '../../layouts/Base.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { site } from '../../data/site';
+
+const title = 'Percorso di Vocal Coaching 1:1 per leader | Stefano Volpe';
+const description = "Come funziona il percorso individuale, dal colloquio all'autonomia, con il lavoro su voce e discorso. Per CEO, dirigenti e membri di CDA.";
+
+// La frase dimostrativa: ogni parola ha enfasi (0-2), pausa dopo (0-2) e altezza della linea di intonazione (0-1)
+const phrase = [
+  ['Abbiamo', 0, 0, .55], ['chiuso', 0, 0, .5], ["l'anno", 1, 0, .62], ['sopra', 0, 0, .5], ['le', 0, 0, .45], ['attese.', 2, 2, .3],
+  ['Adesso', 1, 1, .7], ['serve', 0, 0, .55], ['il', 0, 0, .5], ['coraggio', 2, 1, .85], ['di', 0, 0, .5], ['investire.', 2, 0, .25],
+];
+
+const levers = [
+  ['tono', 'Tono', 'Caldo o fermo, rassicurante o deciso. Il tono dice a chi ascolta come deve accogliere quello che stai per dire.'],
+  ['ritmo', 'Ritmo', 'Rallentare sui passaggi decisivi e accelerare su quelli di contesto. Un ritmo costante, anche se impeccabile, spegne l\'attenzione.'],
+  ['volume', 'Volume', 'Non parlare più forte, ma dare peso alle parole che contano. Il volume costruisce la gerarchia del discorso.'],
+  ['pause', 'Pause', 'Le pause non sono vuoti. Sono il momento in cui la sala capisce che quello che segue è importante.'],
+];
+
+const methods = [
+  {
+    id: 'tvc', name: 'The Voice Code™', role: 'Lo strumento',
+    intro: 'Il metodo per ritrovare e stabilizzare la matrice vocale, il suono originale di ciascuno che anni di abitudini e tensioni hanno coperto. Una voce stabile non si affatica, non si abbassa a fine giornata e resta riconoscibile.',
+    items: [
+      ['Respirazione passiva', 'La respirazione delle maree, senza sforzo, che attiva il diaframma e aiuta a gestire gli stati emotivi.'],
+      ['Sistema solare corporeo', 'La mappa del corpo che allinea voce e postura, dal ventre al torace fino al volto.'],
+      ['Articolazione e dizione', 'Una pronuncia chiara e professionale, che attenua l\'accento senza cancellare l\'identità.'],
+      ['Fonti di emissione', 'Petto, gola e testa. Usarle con consapevolezza dà alla voce colori diversi per contesti diversi.'],
+      ['Cromatica vocale', 'La varietà di toni che tiene viva l\'attenzione anche nei contenuti più tecnici.'],
+    ],
+  },
+  {
+    id: 'msk', name: 'MySkema™', role: 'Lo spartito',
+    intro: 'Il metodo per organizzare l\'esposizione. Sapere cosa dire, cosa non dire e in quale ordine, così che il contenuto arrivi intero e nel tempo giusto.',
+    items: [
+      ['Apertura, sviluppo, chiusura', 'L\'architettura di ogni intervento, dalla prima frase che crea attenzione all\'ultima che resta.'],
+      ['Linguaggio chiaro', 'Scegliere le parole giuste e calibrarle sul livello di chi ascolta, senza tecnicismi superflui.'],
+      ['Direzione e intenzione', 'A chi è rivolta la voce e con quale scopo. Informare, convincere, rassicurare richiedono registri diversi.'],
+      ['Ritmo e pause', 'La gestione del tempo del discorso, per riconoscere quando l\'attenzione cala e recuperarla.'],
+      ['Adattamento al contesto', 'Lo stesso contenuto calibrato per un consiglio, un cliente, un team o una platea.'],
+    ],
+  },
+];
+
+const steps = [
+  ['Il colloquio conoscitivo', 'Trenta minuti con Stefano per capire obiettivi, contesti e punti da rafforzare. È anche il momento in cui Stefano valuta se il percorso è adatto.'],
+  ['The Voice Code™', 'Il lavoro sulla matrice vocale. Respirazione, articolazione, proiezione e musicalità, con esercizi semplici e risultati udibili già nelle prime sessioni.'],
+  ['MySkema™', 'Il lavoro sull\'esposizione. Struttura dei discorsi, linguaggio, direzione e intenzione, sulle riunioni e sugli interventi reali che ti aspettano.'],
+  ['L\'autonomia', 'A fine percorso gestisci da solo tono, ritmo e intensità nelle diverse situazioni. Gli strumenti restano tuoi.'],
+];
+
+const contexts = [
+  { id: 'consiglio', label: 'In consiglio', title: 'Le proposte arrivano a una decisione.', points: ['Un\'esposizione strutturata che porta il consiglio dove vuoi portarlo', 'Meno interruzioni, perché il discorso ha una direzione chiara', 'Tempi decisionali più brevi, perché il messaggio arriva al primo passaggio'] },
+  { id: 'trattativa', label: 'In trattativa', title: 'Condizioni sostenute con calma e fermezza.', points: ['Pause usate come strumento, non subite come silenzi', 'Un tono stabile anche quando la discussione si irrigidisce', 'Argomenti presentati in un ordine che convince'] },
+  { id: 'team', label: 'Con il team', title: 'Le persone seguono la direzione.', points: ['Messaggi chiari che non richiedono di essere ripetuti', 'Competenze trasferite in modo ordinato e memorabile', 'Riunioni più brevi e più concrete'] },
+  { id: 'pubblico', label: 'In pubblico', title: 'Una presenza che regge l\'intera durata.', points: ['Una voce che resta piena dall\'inizio alla fine della giornata', 'Meno stanchezza dopo interventi, call e presentazioni', 'Un\'attenzione che non cala dopo i primi minuti'] },
+];
+
+const faqs = [
+  ['A chi è rivolto il percorso?', 'A chi ha responsabilità di guida e rappresenta l\'azienda con la propria voce. Amministratori delegati, direttori, membri di consiglio, imprenditori e manager di funzione.'],
+  ['Si lavora in gruppo?', 'No. Il percorso è sempre individuale, perché la voce di ciascuno è diversa e il lavoro funziona solo se costruito sulla persona.'],
+  ['Qual è la differenza tra The Voice Code™ e MySkema™?', 'The Voice Code™ lavora sulla voce come strumento, cioè respirazione, articolazione e musicalità. MySkema™ lavora su come usarla, cioè struttura del discorso, linguaggio e intenzione. Insieme formano il percorso completo.'],
+  ['Quanto dura il percorso?', 'La durata è personalizzata e si definisce dopo il colloquio conoscitivo, sulla base degli obiettivi. Tra una sessione e l\'altra puoi inviare a Stefano registrazioni audio o video per avere un riscontro.'],
+  ['È diverso da un corso di public speaking?', 'Sì. Un corso di public speaking insegna tecniche generali a un gruppo. Il vocal coaching individuale lavora sulla tua voce, sul tuo modo di costruire il discorso e sulle situazioni reali del tuo ruolo.'],
+  ['Cosa succede dopo il percorso?', 'Chi lo desidera può proseguire con il KPI Coaching, dedicato a centratura, presenza fisica e leadership percepita.'],
+];
+
+const pageUrl = `${site.url}/vocal-coaching/`;
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: 'Percorso di vocal coaching individuale', serviceType: 'Vocal coaching individuale per executive',
+    url: pageUrl, description, provider: { '@id': `${site.url}/#servizio` }, areaServed: 'IT',
+    hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Metodi', itemListElement: methods.map((m) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: m.name, description: m.intro } })) },
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Il metodo', item: pageUrl },
+  ] },
+];
+---
+<Base title={title} description={description} schema={schema} ogImage="/img/og/vocal-coaching.jpg" heroImage="/img/metodo-decisione.webp">
+
+  <nav class="crumbs" aria-label="Percorso">
+    <div class="wrap"><a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Il metodo</span></div>
+  </nav>
+
+  <section class="m-hero bg-paper" aria-labelledby="h1">
+    <div class="wrap m-hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Il metodo</p>
+        <h1 id="h1" class="h1">Il percorso di vocal coaching individuale</h1>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="lead">Due metodi proprietari e un solo obiettivo. Una voce che porta tutta l'autorevolezza di chi parla, e la piena autonomia nell'usarla in ogni situazione.</p>
+        <div class="m-hero-cta">
+          <a class="btn" href="#inizia">Richiedi il colloquio <span aria-hidden="true">→</span></a>
+          <a class="link" href="#percorso">Come si svolge</a>
+        </div>
+      </div>
+      <figure class="m-hero-img">
+        <img src="/img/metodo-decisione.webp" alt="Un dirigente ascolta in sala riunioni prima di prendere la parola" width="1200" height="800" fetchpriority="high" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- 1. Calcolatore -->
+  <section class="sec bg-white" aria-labelledby="ore">
+    <div class="wrap split">
+      <div class="split-head stack">
+        <p class="eyebrow">La voce nel lavoro di chi guida</p>
+        <h2 id="ore" class="h2">Quante ore all'anno parla per te la tua voce?</h2>
+        <p class="muted">Riunioni, call, trattative, presentazioni. Indica quante ore dedichi in una settimana tipo a ciascuna attività.</p>
+      </div>
+      <div class="calc" data-calc>
+        <div class="calc-rows">
+          <label class="calc-row"><span>Riunioni e comitati</span><output>8 h</output><input type="range" min="0" max="25" step="1" value="8" data-k="riunioni" /></label>
+          <label class="calc-row"><span>Call e videochiamate</span><output>6 h</output><input type="range" min="0" max="25" step="1" value="6" data-k="call" /></label>
+          <label class="calc-row"><span>Clienti e trattative</span><output>3 h</output><input type="range" min="0" max="20" step="1" value="3" data-k="clienti" /></label>
+          <label class="calc-row"><span>Interventi e presentazioni</span><output>1 h</output><input type="range" min="0" max="10" step="1" value="1" data-k="interventi" /></label>
+        </div>
+        <div class="calc-result" aria-live="polite">
+          <p class="calc-num"><b data-total>828</b> ore all'anno</p>
+          <p class="calc-text" data-text>Più di cento giornate lavorative in cui la tua voce rappresenta te e l'azienda.</p>
+          <p class="calc-note">Calcolo su 46 settimane lavorative.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. La stessa frase, due voci -->
+  <section class="sec bg-navy" aria-labelledby="frase">
+    <div class="wrap stack" style="gap:40px">
+      <div class="stack head">
+        <p class="eyebrow">Le stesse parole, due voci</p>
+        <h2 id="frase" class="h2">Il contenuto non cambia. Cambia come arriva.</h2>
+        <p class="lead on-dark">Una frase che un amministratore delegato potrebbe dire in consiglio. Prova a leggerla nei due modi.</p>
+      </div>
+      <div class="phrase-card" data-phrase data-mode="flat">
+        <div class="phrase-toggle" role="group" aria-label="Scegli la versione">
+          <button type="button" aria-pressed="true" data-set="flat">Detta così</button>
+          <button type="button" aria-pressed="false" data-set="voice">Detta con intenzione</button>
+        </div>
+        <div class="phrase-stage">
+          <p class="phrase">
+            {phrase.map(([w, e, p, h]) => (
+              <span class="w" data-e={e} data-p={p} data-h={h}>{w}</span>
+            ))}
+          </p>
+        </div>
+        <p class="phrase-caption" data-caption>Tutte le parole con lo stesso peso, lo stesso ritmo, nessuna pausa. Corretta, ma nessuno ricorderà cosa conta davvero.</p>
+        <div class="levers" role="group" aria-label="Le quattro leve della voce">
+          {levers.map(([id, name, text]) => (
+            <button type="button" class="lever" data-lever={id} aria-pressed="false"><b>{name}</b><span>{text}</span></button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. I due metodi -->
+  <section class="sec bg-paper" aria-labelledby="metodi">
+    <div class="wrap stack" style="gap:40px">
+      <div class="stack head">
+        <p class="eyebrow">Due metodi proprietari</p>
+        <h2 id="metodi" class="h2">La voce è lo strumento. MySkema™ è lo spartito.</h2>
+        <p class="muted">Il percorso unisce due metodi creati da Stefano Volpe in quasi quarant'anni di lavoro con chi guida le aziende.</p>
+      </div>
+      <div class="methods" data-tabs>
+        <div class="method-tabs" role="tablist" aria-label="I due metodi">
+          {methods.map((m, i) => (
+            <button type="button" role="tab" id={`tab-${m.id}`} aria-controls={`panel-${m.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+              <span class="mt-role">{m.role}</span><span class="mt-name">{m.name}</span>
+            </button>
+          ))}
+        </div>
+        {methods.map((m, i) => (
+          <div class="method-panel" role="tabpanel" id={`panel-${m.id}`} aria-labelledby={`tab-${m.id}`} hidden={i !== 0}>
+            <h3 class="sr-only">{m.name}</h3>
+            <p class="method-intro">{m.intro}</p>
+            <ol class="method-items">
+              {m.items.map(([t, d], j) => <li><span class="mi-n">{String(j + 1).padStart(2, '0')}</span><div><h4>{t}</h4><p>{d}</p></div></li>)}
+            </ol>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Il percorso -->
+  <section class="sec bg-white" id="percorso" aria-labelledby="come">
+    <div class="wrap stack" style="gap:48px">
+      <div class="stack head">
+        <p class="eyebrow">Come si svolge</p>
+        <h2 id="come" class="h2">Dal primo colloquio all'autonomia.</h2>
+        <p class="muted">Sempre individuale, con sessioni costruite sui tuoi impegni reali. Tra una sessione e l'altra puoi inviare a Stefano registrazioni audio o video per avere un riscontro.</p>
+      </div>
+      <ol class="hr-steps">
+        {steps.map(([t, d], i) => (
+          <li class="hr-step"><span class="hr-num" aria-hidden="true">0{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. Cosa cambia, per contesto -->
+  <section class="sec bg-paper" aria-labelledby="cambia">
+    <div class="wrap split">
+      <div class="split-head stack">
+        <p class="eyebrow">Cosa cambia</p>
+        <h2 id="cambia" class="h2">Dove lo senti per primo.</h2>
+        <p class="muted">Scegli il contesto che conta di più nel tuo ruolo.</p>
+      </div>
+      <div class="ctx" data-ctx>
+        <div class="ctx-chips" role="tablist" aria-label="Contesti">
+          {contexts.map((c, i) => (
+            <button type="button" role="tab" id={`ctx-${c.id}`} aria-controls={`ctxp-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{c.label}</button>
+          ))}
+        </div>
+        {contexts.map((c, i) => (
+          <div class="ctx-panel" role="tabpanel" id={`ctxp-${c.id}`} aria-labelledby={`ctx-${c.id}`} hidden={i !== 0}>
+            <h3>{c.title}</h3>
+            <ul>{c.points.map((p) => <li>{p}</li>)}</ul>
+          </div>
+        ))}
+        <a class="link" href="/kpi-coaching/">Dopo il percorso, il KPI Coaching</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="sec bg-white" aria-labelledby="domande">
+    <div class="wrap split">
+      <div class="split-head stack">
+        <p class="eyebrow">Domande frequenti</p>
+        <h2 id="domande" class="h2">Prima del colloquio.</h2>
+      </div>
+      <div class="faq">
+        {faqs.map(([q, a], i) => (
+          <details open={i === 0}><summary><h3>{q}</h3></summary><p>{a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec bg-navy closing" id="inizia" aria-labelledby="chiusura">
+    <div class="wrap">
+      <div class="stack">
+        <img class="avatar" src="/img/stefano-volpe.webp" alt="" width="88" height="88" loading="lazy" />
+        <h2 id="chiusura" class="h2">Il primo passo è un colloquio.</h2>
+        <p class="lead">Il colloquio conoscitivo lo conduco io, di persona. So quanto vale il tuo tempo, per questo giorno e ora li scegli tu, direttamente dalla mia agenda.</p>
+      </div>
+      <div class="form-wrap"><LeadForm id="form-metodo" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  // 1. Calcolatore delle ore
+  const calc = document.querySelector<HTMLElement>('[data-calc]');
+  if (calc) {
+    const inputs = [...calc.querySelectorAll<HTMLInputElement>('input[type=range]')];
+    const total = calc.querySelector('[data-total]')!;
+    const text = calc.querySelector('[data-text]')!;
+    const fmt = new Intl.NumberFormat('it-IT');
+    const update = () => {
+      let week = 0;
+      inputs.forEach((i) => { week += +i.value; (i.previousElementSibling as HTMLOutputElement).value = `${i.value} h`; });
+      const year = week * 46;
+      const days = Math.round(year / 8);
+      total.textContent = fmt.format(year);
+      text.textContent = year === 0 ? 'Sposta i cursori per vedere il risultato.'
+        : `Circa ${fmt.format(days)} giornate lavorative in cui la tua voce rappresenta te e l'azienda.`;
+    };
+    inputs.forEach((i) => i.addEventListener('input', update));
+    update();
+  }
+
+  // 2. La stessa frase, due voci
+  const card = document.querySelector<HTMLElement>('[data-phrase]');
+  if (card) {
+    const words = [...card.querySelectorAll<HTMLElement>('.w')];
+    const caption = card.querySelector('[data-caption]')!;
+    const captions: Record<string, string> = {
+      flat: 'Tutte le parole con lo stesso peso, lo stesso ritmo, nessuna pausa. Corretta, ma nessuno ricorderà cosa conta davvero.',
+      voice: 'Il risultato arriva, poi una pausa. La voce sale su coraggio e gli dà peso, poi scende su investire e la frase diventa una decisione.',
+    };
+    const draw = (mode: string) => {
+      // intonazione: in modalità "con intenzione" ogni parola sale o scende secondo la sua altezza
+      words.forEach((w) => { w.style.setProperty('--y', mode === 'voice' ? `${(0.5 - +w.dataset.h!) * 0.5}em` : '0em'); });
+    };
+    const set = (mode: string) => {
+      card.dataset.mode = mode;
+      card.querySelectorAll<HTMLButtonElement>('[data-set]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.set === mode)));
+      caption.textContent = captions[mode];
+      draw(mode);
+      (window as any).dataLayer?.push({ event: 'vcp_demo_frase', mode });
+    };
+    card.querySelectorAll<HTMLButtonElement>('[data-set]').forEach((b) => b.addEventListener('click', () => set(b.dataset.set!)));
+    card.querySelectorAll<HTMLButtonElement>('[data-lever]').forEach((b) => b.addEventListener('click', () => {
+      const on = b.getAttribute('aria-pressed') !== 'true';
+      card.querySelectorAll('[data-lever]').forEach((x) => x.setAttribute('aria-pressed', 'false'));
+      b.setAttribute('aria-pressed', String(on));
+      card.dataset.lever = on ? b.dataset.lever! : '';
+      if (on && card.dataset.mode !== 'voice') set('voice');
+    }));
+  }
+
+  // 3 e 5. Schede accessibili (metodi e contesti)
+  function tabs(root: Element | null) {
+    if (!root) return;
+    const tabsEl = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const select = (t: HTMLButtonElement) => {
+      tabsEl.forEach((x) => {
+        const on = x === t;
+        x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1;
+        (root.querySelector('#' + x.getAttribute('aria-controls')) as HTMLElement).hidden = !on;
+      });
+    };
+    tabsEl.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', (e) => {
+        const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (k) { const n = tabsEl[(i + k + tabsEl.length) % tabsEl.length]; select(n); n.focus(); }
+      });
+    });
+  }
+  tabs(document.querySelector('[data-tabs]'));
+  tabs(document.querySelector('[data-ctx]'));
+</script>
