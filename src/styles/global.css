@@ -83,7 +83,8 @@ p { margin: 0; }
   .hero-grid { display: grid; grid-template-columns: 7fr 5fr; grid-template-areas: "copy portrait" "form portrait"; column-gap: 48px; row-gap: 40px; align-items: start; }
   .hero-copy { grid-area: copy; padding-top: 40px; }
   .hero-form { grid-area: form; max-width: 560px; padding-bottom: 40px; }
-  .portrait { grid-area: portrait; height: 100%; min-height: 640px; }
+  .portrait { grid-area: portrait; justify-self: end; align-self: start; width: 100%; max-width: 380px; height: auto; aspect-ratio: 495 / 627; margin-top: 48px; }
+  .portrait img { object-position: 50% 30%; }
 }
 
 /* Form in tre passi */
@@ -293,3 +294,5 @@ p { margin: 0; }
   .portrait-quote figcaption { position: static; background: var(--navy-950); }
 }
 @media (min-width: 1024px) { .hr-step h3 { min-height: 64px; } }
+
+.tedx-top { position: absolute; top: 16px; right: 16px; padding: 6px 10px; background: rgba(1,2,42,.75); font-size: 12px; }
