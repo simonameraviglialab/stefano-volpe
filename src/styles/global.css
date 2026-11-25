@@ -480,3 +480,14 @@ p { margin: 0; }
 .ctx-tiles li { align-content: start; }
 
 .calc-head { font: 500 12px var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-700); padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+/* "Detta con intenzione": le quattro leve si accendono in oro con una spunta */
+.lever b { display: flex; align-items: center; gap: 8px; transition: color .4s; }
+.lever b::before { content: ""; width: 14px; height: 8px; border-left: 1.5px solid var(--gold-500); border-bottom: 1.5px solid var(--gold-500); transform: rotate(-45deg) scale(0); transform-origin: center; transition: transform .35s ease; margin-top: -4px; flex: none; }
+[data-mode="voice"] .lever b { color: var(--gold-500); }
+[data-mode="voice"] .lever b::before { transform: rotate(-45deg) scale(1); }
+[data-mode="voice"] .lever:nth-child(2) b::before { transition-delay: .08s; }
+[data-mode="voice"] .lever:nth-child(3) b::before { transition-delay: .16s; }
+[data-mode="voice"] .lever:nth-child(4) b::before { transition-delay: .24s; }
+.lever b { gap: 0; }
+.lever b::before { width: 0; margin-right: 0; transition: transform .35s ease, width .35s ease, margin .35s ease; }
+[data-mode="voice"] .lever b::before { width: 14px; margin-right: 10px; }
