@@ -478,3 +478,5 @@ p { margin: 0; }
 @media (min-width: 768px) { .ctx-panel ul.ctx-tiles { grid-template-columns: repeat(3, 1fr); } .ctx-tiles li { grid-template-columns: 1fr; padding: 20px; gap: 8px; } .ct-n { grid-row: auto; } }
 @media (min-width: 1024px) { .journey-track { right: calc((100% - 96px) / 4 - 28px); } }
 .ctx-tiles li { align-content: start; }
+
+.calc-head { font: 500 12px var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-700); padding-bottom: 12px; border-bottom: 1px solid var(--line); }
