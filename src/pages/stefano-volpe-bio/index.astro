@@ -1,0 +1,224 @@
+---
+// Chi sono: indirizzo identico a quello attuale (/stefano-volpe-bio/).
+// Solo il percorso aziendale: niente teatro, radio o attività non legate alle aziende.
+import Base from '../../layouts/Base.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { site } from '../../data/site';
+
+const title = 'Stefano Volpe, vocal coach e speaker TEDx';
+const description = 'Formatore per la comunicazione di chi guida dal 1988, speaker TEDx, creatore di The Voice Code™ e MySkema™. La storia e l\'approccio.';
+
+// [etichetta, titolo, testo]
+const chapters = [
+  ['L\'origine', 'Da bambino pensavano fossi muto.', 'In realtà ascoltavo. Ho ascoltato per sei anni prima di pronunciare le mie prime parole. La passione per la voce è nata così, dall\'osservazione silenziosa di come le persone si parlano.'],
+  ['La domanda', 'Perché alcune voci catturano e altre no?', 'Persone ugualmente preparate, accolte in modo opposto. Ho capito presto che la voce era il problema invisibile che nessuno affrontava, e che chi ha ascoltato a lungo impara a riconoscerlo.'],
+  ['Le fondamenta', 'La voce è corporea.', 'Ho studiato fisiologia della voce, respirazione diaframmatica, articolazione e linguaggio non verbale. La voce è l\'espressione fisica della presenza. Da qui nasce il Sistema Solare Corporeo.'],
+  ['La scelta', 'Solo individuale. Solo chi guida.', 'Ho scelto di lavorare unicamente uno a uno e con ruoli decisionali. Ogni voce è unica, e un lavoro di gruppo non può rispettarla fino in fondo.'],
+  ['I metodi', 'The Voice Code™ e MySkema™.', 'Nel 2015 fondo Vocal Coaching Project e struttura il lavoro in due metodi proprietari. Il primo per la voce come strumento, il secondo per l\'organizzazione del discorso.'],
+  ['L\'evoluzione', 'Il KPI Coaching.', 'I clienti chiedevano di andare oltre la voce. Nasce il KPI Coaching, che porta la consapevolezza vocale nella centratura personale e nella leadership di ogni giorno.'],
+  ['Oggi', 'Al fianco di chi guida.', 'Amministratori delegati, direttori e consiglieri di aziende come Porsche Italia, Mycroclean e OnBusiness, di holding e di gruppi farmaceutici e bancari. E il palco di TEDx.'],
+];
+
+const facts = [
+  ['1988', 'forma la comunicazione di chi guida'],
+  ['2015', 'fonda Vocal Coaching Project'],
+  ['TEDx', 'speaker'],
+  ['56.000', 'persone lo seguono su LinkedIn'],
+];
+
+const principles = [
+  ['Autonomia, non dipendenza', 'Il mio lavoro non è creare dipendenza. È donare libertà. A fine percorso tono, ritmo e intensità li gestisci da solo.'],
+  ['Su misura, sempre', 'Non porto la tua voce verso uno schema. Ne esalto le peculiarità e ne filtro le impurità, perché resti tua.'],
+  ['Autorevolezza, non autorità', 'Il futuro appartiene ai più autentici. L\'autorevolezza si riconosce, non si impone, e la voce è il primo luogo in cui si sente.'],
+];
+
+const roles = [
+  ['Amministratori delegati e CEO', 'Guidano riunioni, trattative e annunci, e rappresentano l\'azienda all\'esterno.'],
+  ['C-level e consiglieri', 'Presentano piani e numeri a consigli, soci e investitori.'],
+  ['Direttori di funzione', 'Guidano team, trasferiscono competenze e sostengono le proprie proposte.'],
+];
+
+const pageUrl = `${site.url}/stefano-volpe-bio/`;
+const schema = [
+  {
+    '@context': 'https://schema.org', '@type': 'ProfilePage', url: pageUrl, name: title,
+    mainEntity: {
+      '@type': 'Person', '@id': `${site.url}/#stefano`, name: 'Stefano Volpe',
+      jobTitle: 'Vocal coach e formatore per executive', image: `${site.url}/img/stefano-volpe.jpg`,
+      worksFor: { '@id': `${site.url}/#servizio` },
+      knowsAbout: ['Vocal coaching', 'Comunicazione per executive', 'Leadership', 'The Voice Code', 'MySkema', 'KPI Coaching'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Bologna', addressCountry: 'IT' },
+      sameAs: [site.linkedin],
+    },
+  },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Chi sono', item: pageUrl },
+  ] },
+];
+---
+<Base title={title} description={description} schema={schema} ogImage="/img/og/stefano-volpe-bio.jpg">
+
+  <nav class="crumbs" aria-label="Percorso">
+    <div class="wrap"><a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Chi sono</span></div>
+  </nav>
+
+  <section class="bio-hero bg-paper" aria-labelledby="h1">
+    <div class="wrap bio-hero-grid">
+      <figure class="bio-portrait">
+        <img src="/img/stefano-volpe.webp" alt="Ritratto di Stefano Volpe" width="495" height="627" fetchpriority="high" />
+      </figure>
+      <div class="hero-copy">
+        <p class="eyebrow">Vocal coach per chi guida un'azienda</p>
+        <h1 id="h1" class="h1">Stefano Volpe</h1>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="lead">Dal 1988 aiuto chi guida a trovare il tono giusto, per sé e per le persone che guida. Ho creato The Voice Code™ e MySkema™ e lavoro solo uno a uno, con chi ha la responsabilità di decidere.</p>
+        <p class="bio-sign">Buona voce a tutti.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="In breve">
+    <div class="wrap">
+      {facts.map(([a, b]) => <p class="fact"><b>{a}</b><span>{b}</span></p>)}
+    </div>
+  </section>
+
+  <!-- Il percorso, a capitoli -->
+  <section class="sec bg-white" aria-labelledby="percorso">
+    <div class="wrap stack" style="gap:40px">
+      <div class="stack head">
+        <p class="eyebrow">Il mio percorso</p>
+        <h2 id="percorso" class="h2">Una storia che comincia dall'ascolto.</h2>
+      </div>
+      <div class="chapters" data-chapters>
+        <ol class="ch-nav" role="tablist" aria-label="Capitoli">
+          {chapters.map(([label], i) => (
+            <li role="presentation">
+              <button type="button" role="tab" id={`ch-${i}`} aria-controls={`chp-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>
+                <span class="ch-n">{String(i + 1).padStart(2, '0')}</span><span class="ch-l">{label}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <div class="ch-stage">
+          {chapters.map(([label, t, d], i) => (
+            <article class="ch-panel" role="tabpanel" id={`chp-${i}`} aria-labelledby={`ch-${i}`} hidden={i !== 0}>
+              <p class="ch-kicker">{String(i + 1).padStart(2, '0')} · {label}</p>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          ))}
+          <div class="ch-controls">
+            <button type="button" class="ch-arrow" data-dir="-1" aria-label="Capitolo precedente"><span aria-hidden="true">←</span></button>
+            <span class="ch-count" aria-live="polite"><b data-cur>01</b> / {String(chapters.length).padStart(2, '0')}</span>
+            <button type="button" class="ch-arrow" data-dir="1" aria-label="Capitolo successivo"><span aria-hidden="true">→</span></button>
+            <span class="ch-bar" aria-hidden="true"><span data-bar></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filosofia -->
+  <section class="sec bg-navy" aria-labelledby="filosofia">
+    <div class="wrap stack" style="gap:56px">
+      <figure class="big-quote">
+        <blockquote>“Col tono giusto si può dire tutto, col tono sbagliato nulla. L'unica difficoltà consiste nel trovare il tono.”</blockquote>
+        <figcaption>George Bernard Shaw</figcaption>
+      </figure>
+      <div class="stack head">
+        <p class="eyebrow">Come lavoro</p>
+        <h2 id="filosofia" class="h2">Non basta cosa si dice. Conta come lo si dice.</h2>
+        <p class="lead on-dark">Il tono è l'anima che accompagna la parola. La vibrazione che convince, il calore che unisce, la fermezza che guida.</p>
+      </div>
+      <ul class="principles">
+        {principles.map(([t, d], i) => <li><span class="pr-n">0{i + 1}</span><h3>{t}</h3><p>{d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Con chi lavoro -->
+  <section class="sec bg-paper" aria-labelledby="chi">
+    <div class="wrap split">
+      <div class="split-head stack">
+        <p class="eyebrow">Con chi lavoro</p>
+        <h2 id="chi" class="h2">Persone con una responsabilità che passa dalla voce.</h2>
+        <p class="muted">Dalla PMI alla holding. Ogni percorso è individuale e costruito sugli obiettivi della persona.</p>
+        <div class="m-hero-cta">
+          <a class="link" href="/vocal-coaching/">Il metodo</a>
+          <a class="link" href="/per-le-aziende/">Per le aziende</a>
+        </div>
+      </div>
+      <ul class="roles">
+        {roles.map(([t, d]) => <li><h3>{t}</h3><p>{d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec bg-white" aria-labelledby="linkedin">
+    <div class="wrap li-band">
+      <div class="stack">
+        <p class="eyebrow">Su LinkedIn</p>
+        <h2 id="linkedin" class="h2">Riflessioni su voce, leadership e comunicazione.</h2>
+        <p class="muted">Una citazione, un pensiero e la sua applicazione in azienda. È il luogo in cui molte collaborazioni sono cominciate.</p>
+      </div>
+      <a class="btn-ghost" href={site.linkedin} rel="noopener" target="_blank">Seguimi su LinkedIn</a>
+    </div>
+  </section>
+
+  <section class="sec bg-navy closing" id="inizia" aria-labelledby="chiusura">
+    <div class="wrap">
+      <div class="stack">
+        <img class="avatar" src="/img/stefano-volpe.webp" alt="" width="88" height="88" loading="lazy" />
+        <h2 id="chiusura" class="h2">Parliamone di persona.</h2>
+        <p class="lead">Il colloquio conoscitivo lo conduco io. So quanto vale il tuo tempo, per questo giorno e ora li scegli tu, direttamente dalla mia agenda.</p>
+      </div>
+      <div class="form-wrap"><LeadForm id="form-bio" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-chapters]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const cur = root.querySelector('[data-cur]')!;
+    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
+    let idx = 0;
+    const go = (n: number, focus = false) => {
+      idx = (n + tabs.length) % tabs.length;
+      tabs.forEach((t, i) => {
+        const on = i === idx;
+        t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1;
+        t.classList.toggle('done', i < idx);
+        const p = root.querySelector<HTMLElement>('#' + t.getAttribute('aria-controls'))!;
+        p.hidden = !on;
+      });
+      cur.textContent = String(idx + 1).padStart(2, '0');
+      bar.style.transform = `scaleX(${(idx + 1) / tabs.length})`;
+      if (focus) tabs[idx].focus();
+      tabs[idx].scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => go(i));
+      t.addEventListener('keydown', (e) => {
+        const k = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (k) { e.preventDefault(); go(idx + k, true); }
+      });
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-dir]').forEach((b) => b.addEventListener('click', () => go(idx + +b.dataset.dir!)));
+    // scorrimento con il dito sul pannello
+    const stage = root.querySelector<HTMLElement>('.ch-stage')!;
+    let x0: number | null = null;
+    stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) go(idx + (dx < 0 ? 1 : -1));
+      x0 = null;
+    });
+    go(0);
+  }
+</script>
