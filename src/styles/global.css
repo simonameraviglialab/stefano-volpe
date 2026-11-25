@@ -422,3 +422,21 @@ p { margin: 0; }
 @media (min-width: 1024px) { .ctx-panel { padding: 40px; } .ctx-panel h3 { font-size: 30px; line-height: 40px; } }
 
 .m-hero-grid .hero-copy { grid-area: auto; padding-top: 0; }
+
+/* Elementi dei metodi: elenco compatto e apribile su telefono, schede aperte su desktop */
+.method-intro { font-family: var(--serif); font-size: 22px; line-height: 32px; color: var(--navy-900); border-left: 2px solid var(--gold-500); padding-left: 16px; }
+.method-items li.mi { padding: 0; display: block; }
+.mi-head { width: 100%; background: none; border: 0; padding: 18px 20px; display: grid; grid-template-columns: 36px 1fr 20px; gap: 8px; align-items: center; text-align: left; cursor: pointer; min-height: 56px; }
+.mi-head h4 { margin: 0; font-size: 19px; }
+.mi-plus { width: 14px; height: 14px; position: relative; justify-self: end; }
+.mi-plus::before, .mi-plus::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 1.5px; background: var(--gold-500); transition: transform .25s; }
+.mi-plus::after { transform: rotate(90deg); }
+.mi-head[aria-expanded="true"] .mi-plus::after { transform: rotate(0deg); }
+.mi-body { display: none; padding: 0 20px 20px 64px; margin: 0; }
+.mi-head[aria-expanded="true"] + .mi-body { display: block; }
+@media (min-width: 1024px) {
+  .method-intro { font-size: 26px; line-height: 38px; padding-left: 24px; max-width: 820px; }
+  .mi-head { cursor: default; padding: 24px 24px 8px; align-items: baseline; }
+  .mi-plus { display: none; }
+  .mi-body { display: block; padding: 0 24px 24px 68px; }
+}

@@ -25,7 +25,7 @@ const levers = [
 const methods = [
   {
     id: 'tvc', name: 'The Voice Code™', role: 'Lo strumento',
-    intro: 'Il metodo per ritrovare e stabilizzare la matrice vocale, il suono originale di ciascuno che anni di abitudini e tensioni hanno coperto. Una voce stabile non si affatica, non si abbassa a fine giornata e resta riconoscibile.',
+    intro: 'Ritrova e stabilizza la matrice vocale, il suono originale di ciascuno. Una voce che non si affatica e resta riconoscibile fino a sera.',
     items: [
       ['Respirazione passiva', 'La respirazione delle maree, senza sforzo, che attiva il diaframma e aiuta a gestire gli stati emotivi.'],
       ['Sistema solare corporeo', 'La mappa del corpo che allinea voce e postura, dal ventre al torace fino al volto.'],
@@ -36,7 +36,7 @@ const methods = [
   },
   {
     id: 'msk', name: 'MySkema™', role: 'Lo spartito',
-    intro: 'Il metodo per organizzare l\'esposizione. Sapere cosa dire, cosa non dire e in quale ordine, così che il contenuto arrivi intero e nel tempo giusto.',
+    intro: 'Organizza l\'esposizione. Cosa dire, cosa non dire e in quale ordine, perché il contenuto arrivi intero.',
     items: [
       ['Apertura, sviluppo, chiusura', 'L\'architettura di ogni intervento, dalla prima frase che crea attenzione all\'ultima che resta.'],
       ['Linguaggio chiaro', 'Scegliere le parole giuste e calibrarle sul livello di chi ascolta, senza tecnicismi superflui.'],
@@ -184,7 +184,14 @@ const schema = [
             <h3 class="sr-only">{m.name}</h3>
             <p class="method-intro">{m.intro}</p>
             <ol class="method-items">
-              {m.items.map(([t, d], j) => <li><span class="mi-n">{String(j + 1).padStart(2, '0')}</span><div><h4>{t}</h4><p>{d}</p></div></li>)}
+              {m.items.map(([t, d], j) => (
+                <li class="mi">
+                  <button type="button" class="mi-head" aria-expanded="false" aria-controls={`mi-${m.id}-${j}`}>
+                    <span class="mi-n">{String(j + 1).padStart(2, '0')}</span><h4>{t}</h4><span class="mi-plus" aria-hidden="true"></span>
+                  </button>
+                  <p id={`mi-${m.id}-${j}`} class="mi-body">{d}</p>
+                </li>
+              ))}
             </ol>
           </div>
         ))}
@@ -332,5 +339,12 @@ const schema = [
     });
   }
   tabs(document.querySelector('[data-tabs]'));
+
+  // Elementi dei metodi: su telefono si aprono uno alla volta, su desktop sono già tutti visibili
+  document.querySelectorAll<HTMLButtonElement>('.mi-head').forEach((b) => b.addEventListener('click', () => {
+    const open = b.getAttribute('aria-expanded') !== 'true';
+    b.closest('.method-items')!.querySelectorAll('.mi-head').forEach((x) => x.setAttribute('aria-expanded', 'false'));
+    b.setAttribute('aria-expanded', String(open));
+  }));
   tabs(document.querySelector('[data-ctx]'));
 </script>
