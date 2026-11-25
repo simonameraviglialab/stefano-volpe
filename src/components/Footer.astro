@@ -1,0 +1,18 @@
+---
+import { nav, site } from '../data/site';
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <img src="/brand/logo-orizzontale-negativo.svg" alt="Vocal Coaching Project di Stefano Volpe" width="256" height="64" loading="lazy" />
+      <nav class="footer-nav" aria-label="Piè di pagina">
+        {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+        <a href={site.linkedin} rel="noopener">LinkedIn</a>
+      </nav>
+    </div>
+    <div class="legal">
+      <span>Vocal Coaching Project di Stefano Volpe · {site.address} · P.IVA {site.vat} · <a href="/privacy-policy/">Privacy</a> · <a href="/cookie-policy/">Cookie</a> · <a href="#" class="iubenda-cs-preferences-link">Preferenze cookie</a></span>
+      <span>MySkema™ e The Voice Code™ sono marchi di Stefano Volpe.</span>
+    </div>
+  </div>
+</footer>

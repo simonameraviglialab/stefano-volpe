@@ -1,0 +1,15 @@
+---
+import { nav } from '../data/site';
+---
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="Vocal Coaching Project di Stefano Volpe, home">
+      <img src="/brand/logo-orizzontale.svg" alt="Vocal Coaching Project di Stefano Volpe" width="240" height="60" />
+    </a>
+    <nav class="site-nav" aria-label="Principale">
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+      <a class="btn-ghost" href="/#inizia">Colloquio conoscitivo</a>
+    </nav>
+    <a class="btn-ghost header-cta-m" href="/#inizia">Colloquio</a>
+  </div>
+</header>

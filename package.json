@@ -1,0 +1,16 @@
+{
+  "name": "vocalcoachingproject",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.0",
+    "@fontsource/playfair-display": "^5.1.0",
+    "@fontsource/work-sans": "^5.1.0",
+    "astro": "^5.0.0"
+  }
+}

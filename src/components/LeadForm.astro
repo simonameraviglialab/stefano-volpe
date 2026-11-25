@@ -1,0 +1,104 @@
+---
+// Form in tre passi: chi sei, la situazione, il giorno.
+// Passo 2 invia a HubSpot (stesso portale del form attuale), passo 3 apre il calendario Cal.com già compilato.
+import { site } from '../data/site';
+interface Props { id: string; }
+const { id } = Astro.props;
+const situazioni = ["Un consiglio o un'assemblea", 'Investitori o soci', 'Una trattativa', 'Il mio team', 'Interventi pubblici e video'];
+const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro di CDA', 'Imprenditore / Founder', 'Risorse umane'];
+---
+<form class="form-card lead-form" id={id} novalidate
+  data-portal={site.hubspot.portalId} data-guid={site.hubspot.formGuid} data-cal={site.cal}>
+  <div class="form-dots" aria-hidden="true"><span class="on"></span><span></span><span></span></div>
+  <p class="sr-only" aria-live="polite" data-status>Passo 1 di 3</p>
+
+  <fieldset class="step" data-step="1">
+    <legend>Chi sei</legend>
+    <div class="fields">
+      <div class="field"><label for={`${id}-n`}>Nome e cognome*</label><input id={`${id}-n`} name="fullname" autocomplete="name" required placeholder=" " /></div>
+      <div class="field"><label for={`${id}-e`}>Email di lavoro*</label><input id={`${id}-e`} name="email" type="email" autocomplete="email" required placeholder=" " /></div>
+    </div>
+    <div class="field"><label for={`${id}-r`}>Ruolo*</label>
+      <select id={`${id}-r`} name="jobtitle" required>
+        {ruoli.map((r) => <option>{r}</option>)}
+      </select>
+    </div>
+    <p class="form-err" data-err hidden>Servono nome e un indirizzo email valido.</p>
+    <button type="button" class="btn" data-next>Continua <span aria-hidden="true">→</span></button>
+  </fieldset>
+
+  <fieldset class="step" data-step="2" hidden>
+    <legend>Dove vuoi essere ascoltato?</legend>
+    <div class="chips">
+      {situazioni.map((s) => <label><input type="checkbox" name="contesto" value={s} /><span>{s}</span></label>)}
+    </div>
+    <div class="field"><label for={`${id}-s`}>Raccontami in due righe</label><textarea id={`${id}-s`} name="motivo_della_richiesta_vocal_coach" rows="3"></textarea></div>
+    <button type="submit" class="btn">Scegli giorno e ora <span aria-hidden="true">→</span></button>
+  </fieldset>
+
+  <fieldset class="step" data-step="3" hidden>
+    <legend>Trenta minuti con Stefano</legend>
+    <div data-cal-slot></div>
+    <a class="link" data-cal-link href={site.cal} target="_blank" rel="noopener">Apri il calendario in una nuova finestra</a>
+  </fieldset>
+
+  <p class="form-note">Valuto ogni richiesta personalmente. Stefano</p>
+</form>
+
+<script>
+  function setup(form: HTMLFormElement) {
+    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('.step')];
+    const dots = [...form.querySelectorAll('.form-dots span')];
+    const status = form.querySelector('[data-status]')!;
+    const go = (n: number) => {
+      steps.forEach((s, i) => (s.hidden = i !== n - 1));
+      dots.forEach((d, i) => d.classList.toggle('on', i < n));
+      status.textContent = `Passo ${n} di 3`;
+      const first = steps[n - 1].querySelector<HTMLElement>('input, textarea, iframe');
+      first?.focus({ preventScroll: true });
+      (window as any).dataLayer?.push({ event: 'vcp_form_step', form_id: form.id, step: n });
+    };
+    const val = (name: string) => (form.elements.namedItem(name) as HTMLInputElement)?.value.trim() ?? '';
+
+    form.querySelector('[data-next]')!.addEventListener('click', () => {
+      const ok = val('fullname').length > 1 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'));
+      form.querySelector<HTMLElement>('[data-err]')!.hidden = ok;
+      if (ok) go(2);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const [first, ...rest] = val('fullname').split(/\s+/);
+      const contesti = [...form.querySelectorAll<HTMLInputElement>('input[name="contesto"]:checked')].map((c) => c.value);
+      const motivo = [contesti.join(', '), val('motivo_della_richiesta_vocal_coach')].filter(Boolean).join(' · ');
+      const { portal, guid, cal } = form.dataset;
+      if (guid) {
+        const hutk = document.cookie.match(/hubspotutk=([^;]+)/)?.[1];
+        try {
+          await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${portal}/${guid}`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fields: [
+                { name: 'firstname', value: first }, { name: 'lastname', value: rest.join(' ') },
+                { name: 'email', value: val('email') }, { name: 'jobtitle', value: val('jobtitle') },
+                { name: 'motivo_della_richiesta_vocal_coach', value: motivo },
+              ],
+              context: { pageUri: location.href, pageName: document.title, ...(hutk ? { hutk } : {}) },
+            }),
+          });
+        } catch { /* il calendario si apre comunque */ }
+      }
+      (window as any).dataLayer?.push({ event: 'vcp_lead', form_id: form.id });
+      const url = new URL(cal!);
+      url.searchParams.set('name', val('fullname'));
+      url.searchParams.set('email', val('email'));
+      if (motivo) url.searchParams.set('notes', motivo);
+      form.querySelector<HTMLAnchorElement>('[data-cal-link]')!.href = url.href;
+      url.searchParams.set('embed', 'true');
+      const slot = form.querySelector('[data-cal-slot]')!;
+      slot.innerHTML = `<iframe class="cal-frame" title="Calendario di Stefano Volpe" loading="lazy" src="${url.href}"></iframe>`;
+      go(3);
+    });
+  }
+  document.querySelectorAll<HTMLFormElement>('.lead-form').forEach(setup);
+</script>

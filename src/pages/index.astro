@@ -1,0 +1,211 @@
+---
+import Base from '../layouts/Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { site } from '../data/site';
+
+const title = 'Vocal coaching per CEO e dirigenti | Stefano Volpe';
+const description = "Percorsi individuali di vocal coaching per CEO, dirigenti e membri di CDA. Stefano Volpe, formatore dal 1988 e speaker TEDx, lavora uno a uno sulla voce di chi guida un'azienda.";
+
+const facts = [
+  ['TEDx', 'Speaker a TEDxSuzzara'],
+  ['56.000', 'persone lo seguono su LinkedIn'],
+  ['1988', 'forma la comunicazione di chi guida'],
+  ['1:1', 'solo percorsi individuali'],
+];
+const moments = [
+  ['La trattativa', "Il prezzo è sul tavolo e nessuno parla. In quei secondi chi tiene la voce ferma porta a casa l'accordo."],
+  ['Il cliente importante', 'Un\'ora per convincere un nuovo cliente che può fidarsi di te per i prossimi dieci anni.'],
+  ["L'annuncio", 'Una riorganizzazione da comunicare a duecento persone. Del tuo discorso ricorderanno il tono prima dei contenuti.'],
+  ['Il consiglio', 'Presenti il budget, arrivano le domande. La tua voce dice se il piano regge, prima ancora dei numeri.'],
+];
+const outcomes = [
+  ['Ti lasciano finire.', 'Nei consigli e nelle riunioni le tue proposte arrivano alla fine e vengono discusse nel merito.'],
+  ['Le decisioni passano.', 'Con soci e investitori il piano convince anche per come lo porti nella stanza.'],
+  ['Il team ti segue.', 'Nei momenti difficili le persone sentono la direzione prima ancora delle parole.'],
+];
+const steps = [
+  ['Il primo incontro', 'Ti ascolto', 'Un colloquio di trenta minuti e una prima sessione per sentire come suoni oggi, nei contesti che contano.'],
+  ['Il cuore del percorso', 'Lavoriamo insieme', 'Respirazione, articolazione, proiezione, ritmo e struttura del discorso, con The Voice Code™ e MySkema™.'],
+  ['Quello che resta', 'Diventi autonomo', 'Strumenti tuoi, che restano anche quando il percorso finisce.'],
+];
+const stories = [
+  ['stefano-susani', 'Stefano Susani', 'Amministratore delegato', 'Quello che mi ha insegnato Stefano è rimasto.'],
+  ['milena-baroni', 'Milena Baroni', 'CEO, Mycroclean Italia', 'Mi ha reso una persona più sicura nel parlare in pubblico.'],
+  ['fabio-cutrera', 'Fabio Cutrera', 'CEO, OnBusiness', 'Più consapevole della mia voce, e di come usarla al meglio.'],
+];
+const clients = [
+  ['porsche-italia', 'Porsche Italia'], ['autostrade', 'Autostrade per l\'Italia'], ['coop', 'Coop Alleanza 3.0'],
+  ['groupama', 'Groupama Assicurazioni'], ['zanichelli', 'Zanichelli'], ['cellularline', 'Cellularline'],
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${site.url}/#servizio`,
+    name: 'Vocal Coaching Project di Stefano Volpe',
+    url: `${site.url}/`,
+    image: `${site.url}/img/stefano-volpe.jpg`,
+    logo: `${site.url}/brand/logo-orizzontale.png`,
+    description,
+    areaServed: 'IT',
+    address: { '@type': 'PostalAddress', streetAddress: 'Via San Domenico, 7', postalCode: '40124', addressLocality: 'Bologna', addressCountry: 'IT' },
+    founder: { '@id': `${site.url}/#stefano` },
+    serviceType: 'Vocal coaching individuale per executive',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${site.url}/#stefano`,
+    name: 'Stefano Volpe',
+    jobTitle: 'Vocal coach e formatore',
+    image: `${site.url}/img/stefano-volpe.jpg`,
+    sameAs: [site.linkedin],
+    knowsAbout: ['Vocal coaching', 'Comunicazione per executive', 'Public speaking', 'Leadership'],
+  },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Vocal Coaching Project', url: `${site.url}/`, inLanguage: 'it-IT' },
+];
+---
+<Base title={title} description={description} schema={schema}>
+
+  <section class="hero bg-paper" aria-labelledby="h1">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Stefano Volpe · Formatore dal 1988</p>
+        <h1 id="h1" class="h1">Vocal coaching per chi guida un'azienda</h1>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="lead">Lavoro uno a uno con CEO, dirigenti e membri di CDA perché la loro voce porti in una stanza tutta l'autorevolezza che hanno già. Il primo passo è un colloquio di trenta minuti.</p>
+      </div>
+      <div class="portrait">
+        <img src="/img/stefano-volpe.webp" alt="Stefano Volpe, vocal coach per executive" width="495" height="627" fetchpriority="high" />
+        <div class="portrait-bar">
+          <button class="audio-btn" type="button" aria-pressed="false" data-audio="/audio/ascolta-stefano.mp3">
+            <span class="disc"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5 3v10l8-5z" /></svg></span>
+            <span><span class="t1">Ascolta Stefano</span><span class="t2">45 secondi, con le cuffie è meglio</span></span>
+          </button>
+          <span class="tedx"><b>TED<sup>x</sup></b> SPEAKER</span>
+        </div>
+      </div>
+      <div class="hero-form" id="inizia">
+        <LeadForm id="form-hero" />
+      </div>
+    </div>
+  </section>
+
+  <section class="facts" aria-label="In breve">
+    <div class="wrap">
+      {facts.map(([a, b]) => <p class="fact"><b>{a}</b><span>{b}</span></p>)}
+    </div>
+  </section>
+
+  <section class="sec bg-white" aria-labelledby="momenti">
+    <div class="wrap stack" style="gap:40px">
+      <div class="stack head">
+        <p class="eyebrow">Quando la voce decide</p>
+        <h2 id="momenti" class="h2">I momenti in cui chi guida deve convincere.</h2>
+        <p class="lead" style="max-width:none">Trattative, clienti, annunci, consigli. Il contenuto lo conosci a memoria. Tono, ritmo, pause e presenza decidono se arriva con l'autorevolezza che merita.</p>
+      </div>
+      <ol class="moments">
+        {moments.map(([t, d], i) => <li class="moment"><h3>0{i + 1} · {t}</h3><p>{d}</p></li>)}
+      </ol>
+      <p class="stat"><b>40%</b><span>di ciò che gli altri pensano di noi passa dalla voce e da come usiamo ritmo, tono, pause e volume.</span></p>
+    </div>
+  </section>
+
+  <section class="hr-band bg-paper" aria-labelledby="hr">
+    <div class="wrap hr-box">
+      <div class="stack">
+        <p class="eyebrow">Per le risorse umane</p>
+        <h2 id="hr" class="t">Scegli un percorso per un manager o un consigliere?</h2>
+        <p class="muted">Obiettivi concordati, riservatezza verso il team, attivazione a nome dell'azienda.</p>
+      </div>
+      <a class="link" href="/aziende/">La pagina per le aziende</a>
+    </div>
+  </section>
+
+  <section class="sec bg-white" aria-labelledby="cambia">
+    <div class="wrap stack" style="gap:48px">
+      <div class="stack head">
+        <p class="eyebrow">Cosa cambia</p>
+        <h2 id="cambia" class="h2">Quello che succede dopo il percorso.</h2>
+      </div>
+      <div class="outcomes">
+        {outcomes.map(([t, d]) => <div class="outcome"><h3>{t}</h3><p class="muted">{d}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec bg-navy" aria-labelledby="metodo">
+    <div class="wrap stack" style="gap:40px">
+      <div class="stack head">
+        <p class="eyebrow">Come lavoro</p>
+        <h2 id="metodo" class="h2">Un percorso di vocal coaching costruito su di te.</h2>
+      </div>
+      <div class="timeline-wrap">
+        <span class="chev c1" aria-hidden="true"></span><span class="chev c2" aria-hidden="true"></span>
+        <ol class="timeline">
+          {steps.map(([k, t, d], i) => (
+            <li class="tl-item"><span class="node" aria-hidden="true">0{i + 1}</span>
+              <div class="tl-body"><span class="kick">{k}</span><h3>{t}</h3><p>{d}</p></div></li>
+          ))}
+        </ol>
+      </div>
+      <a class="link" href="/metodo/">Il metodo nel dettaglio</a>
+    </div>
+  </section>
+
+  <section class="sec bg-paper" aria-labelledby="storie">
+    <div class="wrap stack" style="gap:48px">
+      <div class="stack head">
+        <p class="eyebrow">Storie</p>
+        <h2 id="storie" class="h2">Lo raccontano con la loro voce.</h2>
+      </div>
+      <div class="stories">
+        {stories.map(([slug, n, r, q]) => (
+          <figure class="story">
+            <a class="vid" href={`/storie/#${slug}`} aria-label={`Guarda la testimonianza di ${n}`}>
+              <img src={`/img/storie/${slug}.webp`} alt="" width="540" height="675" loading="lazy" />
+              <span class="play"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5 3v10l8-5z" /></svg></span>
+              <span class="dur">Video · 1 min</span>
+            </a>
+            <blockquote>“{q}”</blockquote>
+            <figcaption><b>{n}</b>{r}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="clients">
+        <h3>Aziende con cui Stefano ha collaborato</h3>
+        <ul class="client-logos">
+          {clients.map(([f, n]) => <li><img src={`/img/clienti/${f}.webp`} alt={n} width="540" height="240" loading="lazy" /></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec bg-navy closing" aria-labelledby="chiusura">
+    <div class="wrap">
+      <div class="stack">
+        <img class="avatar" src="/img/stefano-volpe.webp" alt="" width="88" height="88" loading="lazy" />
+        <h2 id="chiusura" class="h2">Raccontami la situazione che vuoi affrontare.</h2>
+        <p class="lead">Il colloquio conoscitivo lo conduco io, di persona. So quanto vale il tuo tempo, per questo giorno e ora li scegli tu, direttamente dalla mia agenda.</p>
+      </div>
+      <div class="form-wrap"><LeadForm id="form-chiusura" /></div>
+    </div>
+  </section>
+
+</Base>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-audio]');
+  if (btn) {
+    let audio: HTMLAudioElement | null = null;
+    const icon = btn.querySelector('path')!;
+    const set = (on: boolean) => { btn.setAttribute('aria-pressed', String(on)); icon.setAttribute('d', on ? 'M4 3h3v10H4zM9 3h3v10H9z' : 'M5 3v10l8-5z'); };
+    btn.addEventListener('click', () => {
+      audio ??= new Audio(btn.dataset.audio);
+      audio.onended = () => set(false);
+      if (audio.paused) { audio.play().then(() => set(true)).catch(() => set(false)); (window as any).dataLayer?.push({ event: 'vcp_audio_play' }); }
+      else { audio.pause(); set(false); }
+    });
+  }
+</script>
