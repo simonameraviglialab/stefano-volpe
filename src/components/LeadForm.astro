@@ -13,6 +13,12 @@ const ruoli = [
   ['Risorse Umane / HR', 'Risorse umane'],
   ['Libero Professionista', 'Libero professionista'],
 ];
+// value = opzione della proprietà HubSpot chi_richiede_il_servizio (serve a Stefano per il prezzo)
+const perChi = [
+  ['Io, come privato', 'Per me, come privato'],
+  ['Io, a nome della mia azienda', 'Per me, a nome della mia azienda'],
+  ['La mia azienda, per uno o più membri del team', 'Per una o più persone della mia organizzazione'],
+];
 ---
 <form class="form-card lead-form" id={id} novalidate
   data-portal={site.hubspot.portalId} data-guid={site.hubspot.formGuid} data-cal={site.cal}>
@@ -30,7 +36,13 @@ const ruoli = [
         {ruoli.map(([v, l]) => <option value={v}>{l}</option>)}
       </select>
     </div>
-    <p class="form-err" data-err hidden>Servono nome e un indirizzo email valido.</p>
+    <div class="field" role="radiogroup" aria-labelledby={`${id}-pc`}>
+      <span class="lbl" id={`${id}-pc`}>Per chi è il percorso?*</span>
+      <div class="chips chips-col">
+        {perChi.map(([v, l]) => <label><input type="radio" name="chi_richiede_il_servizio" value={v} required /><span>{l}</span></label>)}
+      </div>
+    </div>
+    <p class="form-err" data-err hidden>Servono nome, un indirizzo email valido e per chi è il percorso.</p>
     <button type="button" class="btn" data-next>Continua <span aria-hidden="true">→</span></button>
   </fieldset>
 
@@ -69,7 +81,8 @@ const ruoli = [
     const val = (name: string) => (form.elements.namedItem(name) as HTMLInputElement)?.value.trim() ?? '';
 
     form.querySelector('[data-next]')!.addEventListener('click', () => {
-      const ok = val('fullname').length > 1 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email'));
+      const perChi = form.querySelector<HTMLInputElement>('input[name="chi_richiede_il_servizio"]:checked')?.value;
+      const ok = val('fullname').length > 1 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email')) && !!perChi;
       form.querySelector<HTMLElement>('[data-err]')!.hidden = ok;
       if (ok) go(2);
     });
@@ -90,6 +103,7 @@ const ruoli = [
                 { name: 'firstname', value: first }, { name: 'lastname', value: rest.join(' ') },
                 { name: 'email', value: val('email') }, { name: 'ruolo_in_azienda', value: val('ruolo_in_azienda') },
                 { name: 'quale_situazione_vuoi_affrontare_', value: motivo },
+                { name: 'chi_richiede_il_servizio', value: form.querySelector<HTMLInputElement>('input[name="chi_richiede_il_servizio"]:checked')?.value ?? '' },
               ],
               context: { pageUri: location.href, pageName: document.title, ...(hutk ? { hutk } : {}) },
             }),

@@ -103,6 +103,9 @@ p { margin: 0; }
 .field input:invalid:not(:placeholder-shown) { border-color: #B3261E; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chips label { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 9999px; font-size: 14px; cursor: pointer; }
+.chips-col { flex-direction: column; align-items: stretch; }
+.field .chips label { text-transform: none; letter-spacing: 0; font-size: 15px; font-weight: 400; color: var(--ink); padding: 8px 14px; }
+.chips-col label { border-radius: 2px; }
 .chips input { position: absolute; opacity: 0; pointer-events: none; }
 .chips input:checked + span { color: var(--navy-900); font-weight: 500; }
 .chips label:has(input:checked) { border-color: var(--gold-500); background: #FFF8E6; }
