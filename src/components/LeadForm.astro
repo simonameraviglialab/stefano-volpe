@@ -5,7 +5,14 @@ import { site } from '../data/site';
 interface Props { id: string; }
 const { id } = Astro.props;
 const situazioni = ["Un consiglio o un'assemblea", 'Investitori o soci', 'Una trattativa', 'Il mio team', 'Interventi pubblici e video'];
-const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro di CDA', 'Imprenditore / Founder', 'Risorse umane'];
+// value = opzione della proprietà HubSpot ruolo_in_azienda (deve coincidere esattamente)
+const ruoli = [
+  ['C-Level / Fondatore', 'CEO, C-level o fondatore'],
+  ['Direzione / Dirigenza', 'Direzione o dirigenza'],
+  ['Manager / Team Leader', 'Manager o team leader'],
+  ['Risorse Umane / HR', 'Risorse umane'],
+  ['Libero Professionista', 'Libero professionista'],
+];
 ---
 <form class="form-card lead-form" id={id} novalidate
   data-portal={site.hubspot.portalId} data-guid={site.hubspot.formGuid} data-cal={site.cal}>
@@ -19,8 +26,8 @@ const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro
       <div class="field"><label for={`${id}-e`}>Email di lavoro*</label><input id={`${id}-e`} name="email" type="email" autocomplete="email" required placeholder=" " /></div>
     </div>
     <div class="field"><label for={`${id}-r`}>Ruolo*</label>
-      <select id={`${id}-r`} name="jobtitle" required>
-        {ruoli.map((r) => <option>{r}</option>)}
+      <select id={`${id}-r`} name="ruolo_in_azienda" required>
+        {ruoli.map(([v, l]) => <option value={v}>{l}</option>)}
       </select>
     </div>
     <p class="form-err" data-err hidden>Servono nome e un indirizzo email valido.</p>
@@ -32,7 +39,7 @@ const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro
     <div class="chips">
       {situazioni.map((s) => <label><input type="checkbox" name="contesto" value={s} /><span>{s}</span></label>)}
     </div>
-    <div class="field"><label for={`${id}-s`}>Raccontami in due righe</label><textarea id={`${id}-s`} name="motivo_della_richiesta_vocal_coach" rows="3"></textarea></div>
+    <div class="field"><label for={`${id}-s`}>Raccontami in due righe</label><textarea id={`${id}-s`} name="quale_situazione_vuoi_affrontare_" rows="3" placeholder="Es. Devo presentare al Board un investimento strategico"></textarea></div>
     <button type="submit" class="btn">Scegli giorno e ora <span aria-hidden="true">→</span></button>
   </fieldset>
 
@@ -43,6 +50,7 @@ const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro
   </fieldset>
 
   <p class="form-note">Valuto ogni richiesta personalmente. Stefano</p>
+  <p class="form-legal">Puoi annullare l'iscrizione in qualsiasi momento. <a href="/privacy-policy/">Privacy</a></p>
 </form>
 
 <script>
@@ -70,7 +78,7 @@ const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro
       e.preventDefault();
       const [first, ...rest] = val('fullname').split(/\s+/);
       const contesti = [...form.querySelectorAll<HTMLInputElement>('input[name="contesto"]:checked')].map((c) => c.value);
-      const motivo = [contesti.join(', '), val('motivo_della_richiesta_vocal_coach')].filter(Boolean).join(' · ');
+      const motivo = [contesti.join(', '), val('quale_situazione_vuoi_affrontare_')].filter(Boolean).join(' · ');
       const { portal, guid, cal } = form.dataset;
       if (guid) {
         const hutk = document.cookie.match(/hubspotutk=([^;]+)/)?.[1];
@@ -80,8 +88,8 @@ const ruoli = ['CEO / Amministratore delegato', 'Direzione / Dirigenza', 'Membro
             body: JSON.stringify({
               fields: [
                 { name: 'firstname', value: first }, { name: 'lastname', value: rest.join(' ') },
-                { name: 'email', value: val('email') }, { name: 'jobtitle', value: val('jobtitle') },
-                { name: 'motivo_della_richiesta_vocal_coach', value: motivo },
+                { name: 'email', value: val('email') }, { name: 'ruolo_in_azienda', value: val('ruolo_in_azienda') },
+                { name: 'quale_situazione_vuoi_affrontare_', value: motivo },
               ],
               context: { pageUri: location.href, pageName: document.title, ...(hutk ? { hutk } : {}) },
             }),
